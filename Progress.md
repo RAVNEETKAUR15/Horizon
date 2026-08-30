@@ -57,3 +57,11 @@ Needs verification against each region's local timezone.
 - Why do row counts differ by up to 24 across regions over an identical range?
 
 - ISNE has 1 hour with no matching actual - cause unknown.
+
+
+
+## Data base load
+
+- Loaded 1,062,479 rows into DuckDB (data/horizon.duckdb) with a composite primary key on (entity_id, ts_utc, series_type).
+- Verified on duplicates in the data. 
+- Declare constraints at the boundary. Without the primary key this would have silently corrupted the data with no error.
