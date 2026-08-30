@@ -63,5 +63,6 @@ Needs verification against each region's local timezone.
 ## Data base load
 
 - Loaded 1,062,479 rows into DuckDB (data/horizon.duckdb) with a composite primary key on (entity_id, ts_utc, series_type).
+- The primary key cuaght a real bug on first load: storing timezone-aware pandas timestamps in a TIMESTAMP column collapsed distinct UTC instants onto the same wall-clock time at the 2020-11-01 DST boundary, creating a duplicate. 
 - Verified on duplicates in the data. 
 - Declare constraints at the boundary. Without the primary key this would have silently corrupted the data with no error.
