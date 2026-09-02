@@ -59,7 +59,6 @@ count = con.execute("SELECT COUNT(*) FROM observations_raw").fetchone()[0]
 # fetchone()[0] return the single number of the results.
 print(f"\nRows in database: {count:,}")
 
-con.close() # close connection
 
 
 # Duplicate verification
@@ -68,3 +67,5 @@ dupes = all_data[all_data.duplicated(subset=["entity_id", "ts_utc", "series_type
 print(f"Duplicates in the DataFrame:{len(dupes)}")
 
 print(dupes.sort_values(["entity_id", "ts_utc", "series_type"]).head(20))
+
+con.close() # close connection

@@ -1,3 +1,9 @@
+import duckdb
+import os
+
+os.makedirs("data", exist_ok=True)
+con = duckdb.connect("data/horizon.duckdb") # opens the existing database or creates a new one if it doesn't exist
+
 print("\nHow good are the operator's own forecasts? Let's compare the operator's forecast?")
 print(con.execute("""
     WITH paired AS (
