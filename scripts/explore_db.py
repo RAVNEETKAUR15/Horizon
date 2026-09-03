@@ -1,5 +1,6 @@
-import duckdb
 import os
+
+import duckdb
 
 os.makedirs("data", exist_ok=True)
 con = duckdb.connect("data/horizon.duckdb") # opens the existing database or creates a new one if it doesn't exist

@@ -1,6 +1,7 @@
 """Fetch hourly electricity data from the EIA API."""
 
 import time
+
 import requests
 
 
@@ -61,6 +62,7 @@ def fetch_series(api_key, respondent, series_type, start, end):
 if __name__ == "__main__":
     import json
     import os
+
     from dotenv import load_dotenv
 
     load_dotenv()

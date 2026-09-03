@@ -1,8 +1,8 @@
 ''' Load raw EIA JSON files into a DuckDB database'''
 
 import json
-import pandas as pd
 
+import pandas as pd
 
 REGION = ["CISO", "ERCO", "PJM", "MISO", "ISNE", "NYIS", "BPAT", "FPL"]
 SERIES = ["D", "DF"]
@@ -29,8 +29,9 @@ print(f"\nTotal rows: {len(all_data)}")
 print(all_data.groupby(["entity_id", "series_type"]).size())
 
 
-import duckdb
 import os
+
+import duckdb
 
 os.makedirs("data", exist_ok=True)
 con = duckdb.connect("data/horizon.duckdb") # opens the existing database or creates a new one if it doesn't exist

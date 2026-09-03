@@ -10,9 +10,8 @@ for region in regions:
     with open(f"data/raw/{region}_DF.json") as f:
         forecast = json.load(f)
 
-    demand_periods = set(row["period"] for row in demand)
-    forecast_periods = set(row["period"] for row in forecast)
-
+    demand_periods = {row["period"] for row in demand}
+    forecast_periods = {row["period"] for row in forecast}
     missing_forecast = demand_periods - forecast_periods
     missing_actual = forecast_periods - demand_periods
 
@@ -28,5 +27,5 @@ for region in regions:
         print("First 20 missing forecast:")
         print(sorted(missing_forecast)[:20])
 
-        print("First missing:", sorted(missing_forecast)[0])
-        print("Last missing:", sorted(missing_forecast)[-1])
+        print("First missing:", min(missing_forecast))
+        print("Last missing:", max(missing_forecast))
