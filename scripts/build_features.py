@@ -104,8 +104,6 @@ print(con.execute("""
         ORDER BY avg_cdd DESC
 """).df())
 
-con.close()
-import duckdb
 con = duckdb.connect("data/horizon.duckdb", read_only=True)
 print(con.execute("""
     SELECT ts_utc,
