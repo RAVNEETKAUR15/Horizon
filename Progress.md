@@ -139,3 +139,26 @@ CISO has the most headroom against the baseline (5.04% vs 2.00-3.67% elsewhere),
 ![Temp-Demand curve](data/temp_vs_demand.png)
 
 
+
+
+## Step 5 - Feature Engineering
+
+- Built the 'features' table (530, 651 rows, 18 columns) joining cleaned demand to pivoted weather.
+
+- Pivoted covariates long -> wide with MAX(CASE WHEN feature= ... THEN value END).
+This is the cost of long-format storage, paid once in a single place rather than spread across the codebase.
+
+- Degree days: HDD = max(0, 18 - T), CDD = max(0, T - 18). Splits the U-shaped temperature-demand relationship into two monotonic pieces so linear models can fit it. The 18°C balance point is where internal heat gains (people, lighting, appliances) roughly offsets envelope losses which is a real but building-physics parameter, not a convection. It genuinely varies by region and building stock; a refinement would fit it per region.
+
+- All calendar features computed in local time via AT TIME ZONE, since we are more habitual to follow local clocks. DuckDB handles DST automatically.
+
+- Verified: avg CDD ranks FPL 7.2 > ERCO 5.2 > ... > BPAT 1.1, and avg HDD ranks MISO 9.0 > ISNE > 8.6 > ... > FPL 0.2. Matches geography exactly.
+
+- CISO is near-balanced (HDD 2.6, CDD 2.5) and both are small - costal California has littel temperature swing, so temperature explains proportionality less of its variance. Consistent with its flat-topped scatter and its fat error tail.
+
+- hour_local spans 0-23 for all eight regions, confirming the timezone conversion.
+
+## We still need
+- Lage features (yesterday's demand, last week's demand) - alongside, the backtester, because lags are where leakage risk lives.
+- Fourier terms for smooth daily/weekly/annual cycles.
+- Holiday flags.
