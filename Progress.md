@@ -162,3 +162,39 @@ This is the cost of long-format storage, paid once in a single place rather than
 - Lage features (yesterday's demand, last week's demand) - alongside, the backtester, because lags are where leakage risk lives.
 - Fourier terms for smooth daily/weekly/annual cycles.
 - Holiday flags.
+
+
+## Step 6 - Lag features and the horizon constraint
+
+Task definition: at 09:00 local on day D, predict all 24 hours of day D+1.
+Each region is forecast independently on it local clock.
+
+The furthest target (23:00 on D+1) is 38 hours after forecast time, so every lag must be >=39 hours to stay inside known data. lag_24h is therefore invalid for this task - for most targets it reaches into the future. Used 48h, 168h, 336h, a 4-week same-hour average, and a 24h rolling mean ending 48h back. 
+
+Caveat: LAG counts rows, not hours, so where rows are missing the offset is approximate. 37 excluded rows in 530,651 makes this neglible; a stricter version would join on an explicit timestamp offset. 
+
+## Predicition check
+Predicted lag_168h would beat lag_48h because weekday alignment matters.
+WRONG - 48h wins in all 48 regions (e.g. FPL 0.924 vs 0.883). Temporal proximity beats weekday alignment at this horizon.
+
+### Correlations reveal heating fuel mix
+HDD correlates negatively with demand in 5 of 8 regions (CISO -0.369, MISO -0.133, ERCO -0.111). Not a bug: correlation fits one straight line to a U-shaped, asymmetric relationship. Where summer cooling peaks exceed winter heating load, cold hours are also low-demand hours. As weak or wrong-signed correlation does not mean a useless feature - tree models split within regimes.
+
+ISNE is the standout: 2nd-highest average HDD (8.6) but c_hdd = 0.058, while c_dd = 0.519. New England heats largely with oil and gas rather than electricity, so cold drives fuel demand, not grid demand. Confirmed on the scatter plot: INSE's summer branch peaks ~25,500 MW against ~20,000 in winter. 
+
+BPAT is the only region with meaningfully positive c_hdd(0.414), consistent with high electric heating penetration in the Pacific Northwest.
+
+
+## Rolling-origin backtester
+
+Built the evauluation engine from scratch (not a library) because a wrong baktest silently invalidates every downstream number, and the protocol is the thing most likely to be probed.
+
+Design:
+- Rolling origin, expanding window: train on all history up to each origin, advancing forward. No shuffling - shuffling let the model see the future.
+
+- 39 hour gap between train_end and test_start. The forecast is made at 09:00 for the next day (furthest target 38h ahead), so the freshest usable data is already 39h old. The gap witholds recent data the model wouldn't have at forecast time, preventing leakage through lag features.
+
+- Model-agnostic: take anything with .fit/.predict, so the same code path scores the naive baseline, linear model, LightGBM, and neural net. 
+This is the Forecaster protocol from step 1.
+
+Smoke test with a mean-predictor baseline (always predicts training average): CISO, 8 folds of 30 days each. Confirmed n_train grows (60,462 -> 65,502), n_test = 720 = 30x24, every test window after its training window. Mean MAPE 11.4%, worst in summer folds (fold 7 = 19.76%) where cooling-driven variance is highest and the mean is furthest from the truth. This is the floor real models must beat. CISO's operator baseline is 5.04%.
