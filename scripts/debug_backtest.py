@@ -1,7 +1,6 @@
 """Find out why the backtest returns empty folds."""
 
 import duckdb
-import pandas as pd
 
 FEATURES = [
     "hdd", "cdd", "temp_c", "temp_sq",
@@ -31,7 +30,6 @@ print("   ", df["ts_utc"].min(), "→", df["ts_utc"].max())
 print("   span in days:", (df["ts_utc"].max() - df["ts_utc"].min()).days)
 
 
-import duckdb
 con = duckdb.connect("data/horizon.duckdb", read_only=True)
 print(con.execute("""
     SELECT feature, COUNT(*) AS n

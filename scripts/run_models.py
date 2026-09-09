@@ -7,7 +7,6 @@ from sklearn.linear_model import Ridge
 
 from horizon.evaluation.backtest import rolling_origin_backtest
 
-
 FEATURES = [
     "hdd", "cdd", "temp_c", "temp_sq",
     "humidity_pct", "wind_kmh", "cloud_pct", "radiation_wm2",
