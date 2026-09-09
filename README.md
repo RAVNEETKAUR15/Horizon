@@ -9,16 +9,40 @@ This project predicts how much electricity a region will use **tomorrow, hour by
 # In California, it beats them.
 **Status:** Live and growing. The data pipeline, benchmarking, features, backtesting, and models are complete. Uncertainty quantification and deployment are next.
 
-The result, up front
+# The result, up front🎯
 
 | Region | Mean | Ridge | LightGBM | Operator Baseline |
 |---|---:|---:|---:|---:|
-| CISO | 11.46% | 4.79% | **3.54%** | 5.04% |
-| ERCO | 13.92% | 5.72% | **4.14%** | 2.43% |
-| MISO | 11.13% | 3.98% | **3.27%** | 2.82% |
-| FPL | 20.28% | 5.83% | **4.59%** | 3.67% |
+| CISO | 11.46% | 4.79% | **3.54%** | 5.04% | **beat them**
+| ERCO | 13.92% | 5.72% | **4.14%** | 2.43% | close
+| MISO | 11.13% | 3.98% | **3.27%** | 2.82% | close 
+| FPL | 20.28% | 5.83% | **4.59%** | 3.67% | close
 
 
 <sub>Error = MAPE(mean average % error). Lower is better. Averaged over 8 time-ordered backtests.</sub>
+
+
+Three regions aren't beaten yet and that's the honest state of the work. But California isn't luck. **I predicted it would be the winnable one before training a single model.**
+
+
+# Motivation behind this work
+
+Every grid operator in the world forecasts tomorrow's electricity demand and if they get it wrong, the consequences are real: too low risks a blackout, too high wastes money on idle reserve power. Usefully, they publish those forecasts next to what actually happened. That makes this real world prediction problems which comes with a real professional benchmark built in it.
+
+# To-do
+
+Build a forecasting system that beats those published forecasts - honestly, with no peeking at the feature and understand why it wins or loses in each region.
+
+# Approach
+Eight years of hourly data, eight US grid regions, build end to end:
+1. **👩‍💻Scraped two live APIs** grid demand and weather data with pagination and rate-limiting using Python and REST into .json files.
+2. **📊Shaped the raw JSON into tables** parsing, typing, timezone handling using pandas.
+3. **🗄️Loaded it into queryable dataset** with enforced constraints (SQL, DuckDB)
+4. **🔍Audited the data** and found four hidden defects
+5. **Engineered features from physics** degree days, temperature curves, leakage-safe lags
+6. **Tested it the way reality works** a backtested built from scratch
+7. **Climbed a model ladder** dumb baseline -> linear -> gradient-boosted trees (scikit-learn, LightGBM)
+
+**Result.** Beat the California
 
 
