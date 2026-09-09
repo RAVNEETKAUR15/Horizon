@@ -208,7 +208,9 @@ Smoke test with a mean-predictor baseline (always predicts training average): CI
 | ERCO | 13.92% | 5.72% | **4.14%** | 2.43% |
 | MISO | 11.13% | 3.98% | **3.27%** | 2.82% |
 | FPL | 20.28% | 5.83% | **4.59%** | 3.67% |
-  Headline: LightGBM beats CISO's published day-ahead operator forecast (3.54% vs 5.04%). This confirms the Day-4 predicition made before any modelling: CISO has the most headroom because its error is solar/cooling driven variance, which weather features can capture. The prediction was recorded in advance and held.
+
+
+Headline: LightGBM beats CISO's published day-ahead operator forecast (3.54% vs 5.04%). This confirms the Day-4 predicition made before any modelling: CISO has the most headroom because its error is solar/cooling driven variance, which weather features can capture. The prediction was recorded in advance and held.
 
   LightGBM beats ridge in every region (~1-1.5 pts), confirming the temperature-demand relationship is non-linear with interactions a straight line can't fit.
 
