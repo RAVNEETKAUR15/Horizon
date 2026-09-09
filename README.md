@@ -1,1 +1,1 @@
-![CI](https://github.com/YOUR_USERNAME/horizon/actions/workflows/ci.yml/badge.svg)
+![CI](https://github.com/RAVNEETKAUR15/Horizon/actions/workflows/ci.yml/badge.svg)
