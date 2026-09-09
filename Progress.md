@@ -198,3 +198,22 @@ Design:
 This is the Forecaster protocol from step 1.
 
 Smoke test with a mean-predictor baseline (always predicts training average): CISO, 8 folds of 30 days each. Confirmed n_train grows (60,462 -> 65,502), n_test = 720 = 30x24, every test window after its training window. Mean MAPE 11.4%, worst in summer folds (fold 7 = 19.76%) where cooling-driven variance is highest and the mean is furthest from the truth. This is the floor real models must beat. CISO's operator baseline is 5.04%.
+
+
+## Step 7 - First models: the ladder
+
+Ran mean -> ridge -> LightGBM through the backtester on 4 regions.
+
+              mean    ridge   lightgbm   operator baseline
+  CISO       11.46%   4.79%   3.54%      5.04%   ← BEAT the operators
+  ERCO       13.92%   5.72%   4.14%      2.43%
+  MISO       11.13%   3.98%   3.27%      2.82%
+  FPL        20.28%   5.83%   4.59%      3.67%
+
+  Headline: LightGBM beats CISO's published day-ahead operator forecast (3.54% vs 5.04%). This confirms the Day-4 predicition made before any modelling: CISO has the most headroom because its error is solar/cooling driven variance, which weather features can capture. The prediction was recorded in advance and held.
+
+  LightGBM beats ridge in every region (~1-1.5 pts), confirming the temperature-demand relationship is non-linear with interactions a straight line can't fit.
+
+  Not yet beating operators at ERCO/MISO/FPL - expected: no tuning, missing features (Fourier seasonality, holidday), and operators have years of refinement.
+
+  Bug found and fixed: three weather features (wind, cloud, radiation) were all-Nan due to feature-name typos in the Day-5 pivot ('winds_peed_10m' vs 'wind_speed_10m', etc). All-Nan columns silently wiped every row via dropna, producing Nan MAPE with no crash. Added a Nan-check to build_features.py and a missing-feature guard to the backtester so this fails by saying it loud.           

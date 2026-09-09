@@ -43,9 +43,9 @@ weather AS (
         MAX(CASE WHEN feature = 'temperature_2m'     THEN value END) AS temp_c,
         MAX(CASE WHEN feature = 'dewpoint_2m'        THEN value END) AS dewpoint_c, 
         MAX(CASE WHEN feature = 'relative_humidity_2m' THEN value END) AS humidity_pct,
-        MAX(CASE WHEN feature = 'windspeed_10m' THEN value END) AS wind_kmh,
-        MAX(CASE WHEN feature = 'cloudcover' THEN value END) AS cloud_pct,
-        MAX(CASE WHEN feature = 'shortwave_raditation' THEN value END) AS radiation_wm2
+        MAX(CASE WHEN feature = 'wind_speed_10m' THEN value END) AS wind_kmh,
+        MAX(CASE WHEN feature = 'cloud_cover' THEN value END) AS cloud_pct,
+        MAX(CASE WHEN feature = 'shortwave_radiation' THEN value END) AS radiation_wm2
     FROM covariates_raw
     GROUP BY entity_id, ts_utc
 )
@@ -104,7 +104,7 @@ print(con.execute("""
         ORDER BY avg_cdd DESC
 """).df())
 
-con = duckdb.connect("data/horizon.duckdb", read_only=True)
+#con = duckdb.connect("data/horizon.duckdb", read_only=True)
 print(con.execute("""
     SELECT ts_utc,
            ts_utc AT TIME ZONE 'UTC'                AS as_utc,

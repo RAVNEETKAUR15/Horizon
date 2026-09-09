@@ -50,6 +50,9 @@ def rolling_origin_backtest(
     df must be sorted by time, single entity, with no missing feature rows.
     model must have .fit(X, y) and .predict(X).
     """
+    missing = [c for c in feature_cols if c not in df.columns]
+    if missing:
+        raise ValueError(f"Features not in dataframe: {missing}")
     df = df.sort_values(time_col).reset_index(drop=True)
 
     start_time = df[time_col].min()
