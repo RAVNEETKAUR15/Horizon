@@ -61,5 +61,15 @@ We can literally read a city's climate off this chart. Miami has almost no left 
 
 That's why the oeprator's forecast is weakest there (5% error vs ~2-3% elsewhere), and why a model with good weather features has the most room to win. **The predicition was made before modelling. It held.**
 
+## Verifications
 
+Before modelling anything, I audited the raw data and it was quietly broken in four different ways:
+
+
+| What I found | The tell |
+|---|---:|---:|---:|---:|
+| A demand reading of **2,147,483,647 MW** |The largest number a 32-bit integer can hold and a computer's "no data" placeholder leaking in a real data |
+|**Six-hours blocks of zeros**||A reporting feed silently dropping out|
+|**Negative electricity demand**| A daily-rollover bug, always at midnight|
+|**Duplicate timestamps**| Two moments colliding at a daylight-saving boundary|
 
