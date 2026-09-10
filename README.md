@@ -94,4 +94,4 @@ None of these crash anything. They just make your model quietly wrong. **Catchin
 
 
 # Skills learnt
-<span style="color:red">**Python**</span>
+<code style="color:red">**Python**</code>
