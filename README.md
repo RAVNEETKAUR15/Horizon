@@ -50,4 +50,16 @@ Eight years of hourly data, eight US grid regions, build end to end:
 Plot a region's power use against outdoor temperature and a shape appears:
 ![Temperature vs Demand](data/temp_vs_demand.png)
 
+Every region draws a **U** (or half of one):
+1. **Cold ->** heating switches on -> demand climbs
+2. **Mild (~18°C) ->** nothing runs -> demand bottoms out
+3. **Hot ->** air conditioning roars -> demand climbs again
+
+We can literally read a city's climate off this chart. Miami has almost no left arm (Florida doesn't heat). Boston freezes, so its left arm is steep.
+
+**California broke the pattern:** a flat, smeared top instead of a clean U. The reason: California reports net demand - total use **minus** the power its millions of rooftop solar panels quietly generate. On a sunny afternoon, solar cancels the AC load, so demand there depend on **cloud cover across the whole state**, genuinely hard to predict a day ahead.
+
+That's why the oeprator's forecast is weakest there (5% error vs ~2-3% elsewhere), and why a model with good weather features has the most room to win. **The predicition was made before modelling. It held.**
+
+
 
