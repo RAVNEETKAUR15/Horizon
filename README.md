@@ -39,10 +39,15 @@ Eight years of hourly data, eight US grid regions, build end to end:
 2. **📊Shaped the raw JSON into tables** parsing, typing, timezone handling using pandas.
 3. **🗄️Loaded it into queryable dataset** with enforced constraints (SQL, DuckDB)
 4. **🔍Audited the data** and found four hidden defects
-5. **Engineered features from physics** degree days, temperature curves, leakage-safe lags
-6. **Tested it the way reality works** a backtested built from scratch
-7. **Climbed a model ladder** dumb baseline -> linear -> gradient-boosted trees (scikit-learn, LightGBM)
+5. **🌡️Engineered features from physics** degree days, temperature curves, leakage-safe lags
+6. **⏳Tested it the way reality works** a backtested built from scratch
+7. **📈Climbed a model ladder** dumb baseline -> linear -> gradient-boosted trees (scikit-learn, LightGBM)
 
-**Result.** Beat the California
+**Result.** Beat the California operators' own day-ahead forecast (3.54% vs 5.04%)-landing exactly where I predicted, for a reason rooted in physics.
+
+## 🔬 Electricity is physics you can see
+
+Plot a region's power use against outdoor temperature and a shape appears:
+![Temperature vs Demand](data/temp_vs_demand.png)
 
 
