@@ -73,3 +73,25 @@ Before modelling anything, I audited the raw data and it was quietly broken in f
 |**Negative electricity demand**| A daily-rollover bug, always at midnight|
 |**Duplicate timestamps**| Two moments colliding at a daylight-saving boundary|
 
+None of these crash anything. They just make your model quietly wrong. **Catching them is main task.**
+
+# Roadmap 🗺️
+**Complete**
+1. Ingestion pipeline (EIA + Open-Meteo, 8 regions, 8 years, ~1M rows)
+2. Data-quality audit -> 4 defect classes found and handled
+3. Operator benchmark (the number to beat)
+4. Physics based features + leakage-safe lags
+5. Rolling-origin backtested (built from scratch)
+6. Model ladder: mean -> ridge ->LightGBM
+
+**Up next**
+
+1. Seasonality + holiday features -> beat the other three regions
+2. A neural model (PyTorch) trained across all regions at once
+3. **Uncertainty** not just "24,000 MW" but "24,000 ± 1500, 90% confident"
+4. **Decision layer** turn the forecast into dollars saved
+5. Ship using API, dashboard and live retraining
+
+
+# Skills learnt
+<span style="color:red">**Python**</span>
