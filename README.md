@@ -94,4 +94,4 @@ None of these crash anything. They just make your model quietly wrong. **Catchin
 
 
 # Skills learnt
-<code style="color:red">**Python**</code>
+<code style="color:red">**Python**</code> <code style="color:red">**SQL/DuckDB**</code> <code style="color:red">**pandas**</code> <code style="color:red">**scikit-learn**</code> <code style="color:red">**LightGBM**</code> <code style="color:red">**pytest**</code> <code style="color:red">**GitHub**</code> <code style="color:red">**Actions**</code>
